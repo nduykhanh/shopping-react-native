@@ -1,5 +1,8 @@
 import React, {Component} from "react";
 import {View, Text, TouchableOpacity} from "react-native";
+import Menu from './Menu';
+import Shop from './Shop/Shop';
+import Drawer from 'react-native-drawer'
 
 export default class Main extends Component {
     constructor(props) {
@@ -7,35 +10,24 @@ export default class Main extends Component {
 
     }
 
-    goToAuthentication(){
-        const {navigator} = this.props;
-        navigator.push({name:'AUTHENTICATION'});
-    }
-
-    goToChangeInfo(){
-        const {navigator} = this.props;
-        navigator.push({name:'CHANGE_INFO'});
-    }
-
-    goToOrderHistory(){
-        const {navigator} = this.props;
-        navigator.push({name:'OrderHistory'});
-    }
+    closeControlPanel = () => {
+        this.drawer.close()
+    };
+    openControlPanel = () => {
+        this.drawer.open()
+    };
 
     render() {
+        const {navigator} = this.props;
         return (
-            <View style={{flex:1, backgroundColor:'#DFF5C9'}}>
-                <Text>Main</Text>
-                <TouchableOpacity onPress={this.goToAuthentication.bind(this)}>
-                    <Text>Go to Authentication</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.goToChangeInfo.bind(this)}>
-                    <Text>Go to Change Info</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.goToOrderHistory.bind(this)}>
-                    <Text>Go to Order History</Text>
-                </TouchableOpacity>
-            </View>
+        <Drawer
+            openDrawerOffset={0.4}
+            tapToClose
+            ref={(ref) => this.drawer = ref}
+            content={<Menu navigator={navigator}/>}
+        >
+            <Shop open={this.openControlPanel.bind(this)}/>
+        </Drawer>
         );
     }
 }
